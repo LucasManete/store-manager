@@ -8,6 +8,7 @@ const getAllSales = async (_req, res) => {
 const getSalesById = async (req, res) => {
   const { id } = req.params;
   const [result] = await salesServices.getSalesById(id);
+ 
   if (result.length === 0) {
     return res.status(404).json({ message: 'Sale not found' });
   }
