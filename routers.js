@@ -1,12 +1,16 @@
 const express = require('express');
+// const rescue = require('express-rescue');
 
 const router = express.Router();
+const validateProducts = require('./middlewares/productsMiddlewares');
 
 const productsControllers = require('./controllers/productsControllers');
 const salesControllers = require('./controllers/salesControllers');
 
-router.use('/products/:id', productsControllers.getProductIDController);
-router.use('/products', productsControllers.getAllProductsController);
-router.use('/sales/:id', salesControllers.getSalesById);
-router.use('/sales', salesControllers.getAllSales);
+router.get('/products/:id', productsControllers.getProductIDController);
+router.get('/products', productsControllers.getAllProductsController);
+router.get('/sales/:id', salesControllers.getSalesById);
+router.get('/sales', salesControllers.getAllSales);
+
+router.post('/products', validateProducts);
 module.exports = router;
