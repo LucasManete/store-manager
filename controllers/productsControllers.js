@@ -18,7 +18,19 @@ const getProductIDController = async (req, res) => {
    res.status(200).json(result);
 };
 
+const postProducts = async (req, res) => {
+  const { name, quantity } = req.body;
+  const [getExists] = await productsServices.getAll();
+  const result = await productsServices.postProduct(name, quantity);
+  const verifyExistsSameName = getExists.find((product) => product.name === name);
+  if (verifyExistsSameName) {
+    return res.status(409).json({ message: 'Product already exists' });
+  }
+  return res.status(201).json(result);
+};
+
 module.exports = {
   getAllProductsController,
   getProductIDController,
+  postProducts,
 };
