@@ -19,4 +19,5 @@ router.put('/products/:id', productsControllers.putProducts);
 router.delete('/products/:id', productsControllers.deleteProduct);
 
 router.post('/sales', salesControllers.postSales);
+router.put('/sales/:id', salesControllers.updateSale);
 module.exports = router;
