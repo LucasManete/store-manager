@@ -40,9 +40,20 @@ const putProducts = async (req, res) => {
  return res.status(200).json({ ...result });
 };
 
+const deleteProduct = async (req, res) => {
+  const { id } = req.params;
+  const [getId] = await productsServices.getById(id);
+  await productsServices.deleteProduct(id);
+  if (getId.length === 0) {
+    res.status(404).json({ message: 'Product not found' });
+  }
+  return res.status(204).end();
+};
+
 module.exports = {
   getAllProductsController,
   getProductIDController,
   postProducts,
   putProducts,
+  deleteProduct,
 };

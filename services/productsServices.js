@@ -12,9 +12,11 @@ const putProducts = async (name, quantity, id) => {
   };
   return result;
 };
+const deleteProduct = (id) => productsModels.deleteProduct(id);
 module.exports = {
   getAll,
   getById,
   postProduct,
   putProducts,
+  deleteProduct,
 };
