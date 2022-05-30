@@ -2,12 +2,15 @@ const shema = require('../joi/JoiTestsProducts');
 
 const validateProductsMiddleware = (req, res, next) => {
   const { error } = shema.validate(req.body);
-  const validadeMessage = error.details[0].message;
-  if (error.details[0].type === 'string.min' || error.details[0].type === 'number.min') {
-    const [message] = error.details.map((errors) => errors.message);
-    return res.status(422).json({ message });
+  const { name, quantity } = req.body;
+  if (!name || !quantity) {
+    const erros = error.message;
+    return res.status(400).json({ message: erros });
   }
-  res.status(400).json({ message: validadeMessage });
+  if (name.length < 5 || quantity <= 0) {
+    const erros = error.message;
+    return res.status(422).json({ message: erros });
+  }
   next();
 };
 
