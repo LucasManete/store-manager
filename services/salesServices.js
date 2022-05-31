@@ -22,9 +22,12 @@ const updateSale = async (id, sales) => {
   });
 };
 
+const deleteSale = async (id) => salesModels.deleteSale(id);
+
 module.exports = {
   getAll,
   getById,
   createSale,
   updateSale,
+  deleteSale,
 };
