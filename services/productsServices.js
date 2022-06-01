@@ -13,9 +13,8 @@ const putProducts = async (name, quantity, id) => {
   return result;
 };
 const getbyName = async (name) => {
-  const teste = await productsModels.getByName(name);
-  console.log(teste);
-  if (teste) {
+  const [getExists] = await productsModels.getByName(name);
+  if (getExists) {
     return true;
   }
   return false;
