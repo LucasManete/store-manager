@@ -12,6 +12,14 @@ const putProducts = async (name, quantity, id) => {
   };
   return result;
 };
+const getbyName = async (name) => {
+  const teste = await productsModels.getByName(name);
+  console.log(teste);
+  if (teste) {
+    return true;
+  }
+  return false;
+};
 const deleteProduct = (id) => productsModels.deleteProduct(id);
 module.exports = {
   getAll,
@@ -19,4 +27,5 @@ module.exports = {
   postProduct,
   putProducts,
   deleteProduct,
+  getbyName,
 };

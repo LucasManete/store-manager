@@ -20,10 +20,9 @@ const getProductIDController = async (req, res) => {
 
 const postProducts = async (req, res) => {
   const { name, quantity } = req.body;
-  const [getExists] = await productsServices.getAll();
+  const getExists = await productsServices.getbyName(name);
   const result = await productsServices.postProduct(name, quantity);
-  const verifyExistsSameName = getExists.find((product) => product.name === name);
-  if (verifyExistsSameName) {
+  if (getExists === true) {
     return res.status(409).json({ message: 'Product already exists' });
   }
   return res.status(201).json(result);

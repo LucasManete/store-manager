@@ -70,36 +70,35 @@ describe("(camada salesControllers) Verifica se ao chamar o getAll contém produ
   })
 })
 
-
-
-// describe("(camada controller) Verifica se é inserido com sucesso", () => {
-//   describe("Retorna um produto corretamente" , () => {
+describe("(camada salescontroller) Verifica se é inserido com sucesso", () => {
+  describe("Retorna um produto corretamente" , () => {
     
-//     const response = {};
-//     const request = {};
+    const response = {};
+    const request = {};
 
-//     before(() => {
-//       request.body = { };
-//       response.status = sinon.stub().returns(response);
-//       response.json = sinon.stub().returns();
+    before(() => {
+      request.body = { };
+      response.status = sinon.stub().returns(response);
+      response.json = sinon.stub().returns();
 
-//       sinon.stub(productsServices, 'postProduct').resolves({
-//         name: 'testeee',
-//         quantity: 100,
-//       });
-//     })
+      sinon.stub(salesServices, 'createSale').resolves({
+        date: "2021-09-09T04:54:29.000Z",
+        productId: 1,
+        quantity: 2,
+      });
+    })
 
-//     after(() => {
-//       productsServices.postProduct.restore();
-//     })
+    after(() => {
+      salesServices.createSale.restore();
+    })
 
-//     it('Retorna o "status 200"', async () => {
-//       await productsControllers.postProducts(request, response);
-//       expect(response.status.calledWith(201)).to.be.equal(true)
-//     })
-//     it('retorna um json com o objeto criado', async () => {
-//       await productsControllers.postProducts(request, response);
-//       expect(response.json.calledWith(sinon.match.object)).to.be.equal(true)
-//     })
-//   })
-// } )
+    it('Retorna o "status 201"', async () => {
+      await salesControllers.postSales(request, response);
+      expect(response.status.calledWith(201)).to.be.equal(true)
+    })
+    it('retorna um json com o objeto criado', async () => {
+      await salesControllers.postSales(request, response);
+      expect(response.json.calledWith(sinon.match.object)).to.be.equal(true)
+    })
+  })
+} )
