@@ -25,12 +25,6 @@ describe("(camada salesControllers) Verifica se ao chamar o getAll e não conté
       await salesControllers.getAllSales(request, response);
       expect(response.status.calledWith(200)).to.be.equal(true)
     })
-
-    // it('Retorna um objeto', async () => {
-    //   await productsControllers.getAllProductsController(request, response);
-     
-    //   expect(response.json.calledWith(sinon.match.array)).to.be.equal(true)
-    // })
   })
 })
 
