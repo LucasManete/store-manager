@@ -101,4 +101,37 @@ describe("(camada salescontroller) Verifica se é inserido com sucesso", () => {
       expect(response.json.calledWith(sinon.match.object)).to.be.equal(true)
     })
   })
-} )
+})
+
+describe("(camada controller) Verifica se ao chamar o getById contém sales no BD", () => {
+  describe('quando existe sales no banco de dados', async () => {
+    const response = {};
+    const request = {params: {id: 1}};
+    const bancoDados = [{
+      date: "2021-09-09T04:54:29.000Z",
+      productId: 1,
+      quantity: 2,
+    }]
+    before(() => {
+      response.status = sinon.stub().returns(response);
+      response.json = sinon.stub().returns();
+
+      sinon.stub(salesServices, 'getById').resolves(bancoDados);
+    })
+
+    after(() => {
+      salesServices.getById.restore();
+    })
+
+    it('Retorna o "status 404"', async () => {
+      await salesControllers.getSalesById(request, response);
+      expect(response.status.calledWith(200)).to.be.equal(true)
+    })
+
+    it('Retorna um objeto', async () => {
+      await salesControllers.getSalesById(request, response);
+     
+      expect(response.json.calledWith(sinon.match.object)).to.be.equal(true)
+    })
+  })
+})

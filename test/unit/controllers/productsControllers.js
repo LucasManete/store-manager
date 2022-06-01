@@ -3,6 +3,7 @@ const { expect } = require('chai')
 
 const productsControllers = require('../../../controllers/productsControllers');
 const productsServices = require('../../../services/productsServices');
+const { request } = require('express');
 
 describe("(camada controller) Verifica se ao chamar o getAll e não contém produtos no BD", () => {
   describe('quando não existe files no banco de dados', async () => {
@@ -70,15 +71,14 @@ describe("(camada controller) Verifica se ao chamar o getAll contém produtos no
 })
 
 describe("(camada controller) Verifica se ao chamar o getById contém produtos no BD", () => {
-  describe('quando não existe files no banco de dados', async () => {
+  describe('quando não existe products no banco de dados', async () => {
     const response = {};
     const request = {params: {id: 1}};
-
     before(() => {
       response.status = sinon.stub().returns(response);
       response.json = sinon.stub().returns();
 
-      sinon.stub(productsServices, 'getById').resolves([]);
+      sinon.stub(productsServices, 'getById').resolves([[]]);
     })
 
     after(() => {
@@ -86,12 +86,12 @@ describe("(camada controller) Verifica se ao chamar o getById contém produtos n
     })
 
     it('Retorna o "status 404"', async () => {
-      await productsControllers.getAllProductsController(request, response);
+      await productsControllers.getProductIDController(request, response);
       expect(response.status.calledWith(404)).to.be.equal(true)
     })
 
     it('Retorna um objeto', async () => {
-      await productsControllers.getAllProductsController(request, response);
+      await productsControllers.getProductIDController(request, response);
      
       expect(response.json.calledWith(sinon.match.object)).to.be.equal(true)
     })
