@@ -24,6 +24,12 @@ describe("(camada service) Busca os Produtos no BD", () => {
       const response = await productsServices.getAll()
       expect(response).to.be.an('array')
     })
+    it('retorna um objeto que contem 3 keys', async () => {
+      const [result] = await productsServices.getAll();
+      expect(result).to.have.property('id')
+      expect(result).to.have.property('name')
+      expect(result).to.have.property('quantity')
+  })
   })
 })
 
@@ -131,6 +137,29 @@ describe("(camada service) Verifica se é possivel excluir um produto", () => {
     it('Não retorna nada em caso de sucesso', async () => {
       const result = await productsServices.deleteProduct();
       expect(result).to.be.an("undefined")
+    })
+  })
+})
+
+describe("(camada service) Verifica se é possivel atualizar um produto", () => {
+  describe('Retorna um produto', () => {
+    const bancoDados = [[
+      {
+      id: 1,
+      name: "Martelo de Thor",
+      quantity : 10,
+      }
+    ]]
+    before(async () => {
+      sinon.stub(connection,'execute').resolves(bancoDados)
+    })
+
+    after(() => {
+      connection.execute.restore();
+    })
+    it('retorna um objeto caso de sucesso', async () => {
+      const result = await productsServices.putProducts();
+      expect(result).to.be.an("object")
     })
   })
 })
