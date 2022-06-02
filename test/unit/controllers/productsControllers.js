@@ -3,7 +3,6 @@ const { expect } = require('chai')
 
 const productsControllers = require('../../../controllers/productsControllers');
 const productsServices = require('../../../services/productsServices');
-const { request } = require('express');
 
 describe("(camada controller) Verifica se ao chamar o getAll e não contém produtos no BD", () => {
   describe('quando não existe files no banco de dados', async () => {
@@ -76,7 +75,7 @@ describe("(camada controller) Verifica se ao chamar o getById contém produtos n
     const request = {params: {id: 1}};
     before(() => {
       response.status = sinon.stub().returns(response);
-      response.json = sinon.stub().returns();
+      response.json = sinon.stub().returns({ message: 'Product not found' });
 
       sinon.stub(productsServices, 'getById').resolves([[]]);
     })
@@ -94,6 +93,10 @@ describe("(camada controller) Verifica se ao chamar o getById contém produtos n
       await productsControllers.getProductIDController(request, response);
      
       expect(response.json.calledWith(sinon.match.object)).to.be.equal(true)
+    })
+    it('contem uma chave menssage', async () => {
+      await productsControllers.getProductIDController(request, response);
+      expect(response.json()).to.have.key("message")
     })
   })
 })
@@ -129,4 +132,8 @@ describe("(camada controller) Verifica se é inserido com sucesso", () => {
       expect(response.json.calledWith(sinon.match.object)).to.be.equal(true)
     })
   })
-} )
+})
+
+
+
+

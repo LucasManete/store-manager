@@ -4,6 +4,33 @@ const { expect } = require('chai')
 const salesControllers = require('../../../controllers/salesControllers');
 const salesServices = require('../../../services/salesServices');
 
+// describe("(camada controller) Verifica se é possivel deletar uma venda", () => {
+//   describe('Retorna nada quando dá sucesso', async () => {
+//     const response = {};
+//     const request = {params: {id: 1}};
+//     before(() => {
+//       const bancoDados = [[{
+//         date: "2021-09-09T04:54:29.000Z",
+//         productId: 1,
+//         quantity: 2,
+//       }]]
+//       response.status = sinon.stub().returns(response);
+//       response.json = sinon.stub().returns();
+
+//       sinon.stub(salesServices, 'deleteSale').resolves(bancoDados);
+//       sinon.stub(salesServices, 'getById').resolves(bancoDados);
+//     })
+
+//     after(() => {
+//       salesServices.deleteSale.restore();
+//     })
+
+//     it('Retorna o "status 200"', async () => {
+//       await salesControllers.deleteSale(request, response);
+//       expect(response.status.calledWith(200)).to.be.equal(true)
+//     })
+//   })
+// })
 
 describe("(camada salesControllers) Verifica se ao chamar o getAll e não contém produtos no BD", () => {
   describe('quando não existe files no banco de dados', async () => {
@@ -97,6 +124,36 @@ describe("(camada salescontroller) Verifica se é inserido com sucesso", () => {
   })
 })
 
+describe("(camada controller) Verifica se ao chamar o getById não contém sales no BD", () => {
+  describe('quando não existe sales no banco de dados', async () => {
+    const response = {};
+    const request = {params: {id: 9999}};
+    before(() => {
+      response.status = sinon.stub().returns(response);
+      response.json = sinon.stub().returns({ 'message': 'Sale not found' });
+
+      sinon.stub(salesServices, 'getById').resolves([[]]);
+    })
+
+    after(() => {
+      salesServices.getById.restore();
+    })
+
+    it('Retorna o "status 404"', async () => {
+      await salesControllers.getSalesById(request, response);
+      expect(response.status.calledWith(404)).to.be.equal(true)
+    })
+    it('contem uma chave menssage', async () => {
+       await salesControllers.getSalesById(request, response);
+       expect(response.json()).to.have.key("message")
+     })
+     it('o erro retorna um objeto de erro', async () => {
+      await salesControllers.getSalesById(request, response);
+      expect(response.json()).to.be.an("object")
+    })
+  })
+})
+
 describe("(camada controller) Verifica se ao chamar o getById contém sales no BD", () => {
   describe('quando existe sales no banco de dados', async () => {
     const response = {};
@@ -117,7 +174,7 @@ describe("(camada controller) Verifica se ao chamar o getById contém sales no B
       salesServices.getById.restore();
     })
 
-    it('Retorna o "status 404"', async () => {
+    it('Retorna o "status 200"', async () => {
       await salesControllers.getSalesById(request, response);
       expect(response.status.calledWith(200)).to.be.equal(true)
     })
