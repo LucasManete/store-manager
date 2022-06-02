@@ -134,6 +134,38 @@ describe("(camada controller) Verifica se é inserido com sucesso", () => {
   })
 })
 
+describe("(camada controller) Verifica se ao chamar o getById contém sales no BD", () => {
+  describe('quando existe sales no banco de dados', async () => {
+    const response = {};
+    const request = {params: {id: 1}};
+    const bancoDados = [[{
+          id: 1,
+          name: "Martelo de Thor",
+          quantity: 10
+        }]]
 
+    before(() => {
+      response.status = sinon.stub().returns(response);
+      response.json = sinon.stub().returns();
+
+      sinon.stub(productsServices, 'getById').resolves(bancoDados);
+    })
+
+    after(() => {
+        productsServices.getById.restore();
+    })
+
+    it('Retorna o "status 200"', async () => {
+      await productsControllers.getProductIDController(request, response);
+      expect(response.status.calledWith(200)).to.be.equal(true)
+    })
+
+    it('Retorna um objeto', async () => {
+      await productsControllers.getProductIDController(request, response)
+     
+      expect(response.json.calledWith(sinon.match.object)).to.be.equal(true)
+    })
+  })
+})
 
 
